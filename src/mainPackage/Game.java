@@ -4,6 +4,8 @@ package mainPackage;
 public class Game {
 	private RoomManager roomManager;
 	Scanner scnr = new Scanner(System.in);
+	String currentInput;
+	String[] currentInputList;
 	
 	public Game() {
 		// Instantiate room objects
@@ -24,8 +26,11 @@ public class Game {
 		RoomManager needs to have a list of available
 		unlocked Rooms, all the Room classes need to have list
 		of available actions, enemies, etc. Also print the description
-		of what's in the current room.
+		of what's in the current room. Make options of what room to enter
+		be numbers. Like Armory is 1, LivingQuarters is 2, etc. Don't start at 0
+		because that would just be your current room.
 		*/
+		readInput();
 	}
 	
 	public void endGame(boolean victory) {
@@ -63,8 +68,18 @@ public class Game {
         } catch (IOException | InterruptedException ex) {}
     }
 
-	public void processInput() {
-		// change to lowercase, ensure it's valid input, etc
+	public String[] cleanInput(String input) {
+		// change to lowercase, split to a list, ensure it's valid input, etc
+		return input.split(" "); // for now
+	}
+	
+	public void readInput() {
+		currentInput = scnr.nextLine();
+		currentInputList = cleanInput(currentInput);
+		if(currentInputList[0].equals("enter")) {
+			int roomIndex = Integer.parseInt(currentInputList[1]);
+			roomManager.movePlayer(roomManager.getRoomByIndex(roomIndex));
+		}
 	}
 
 	public RoomManager getRoomManager() {
