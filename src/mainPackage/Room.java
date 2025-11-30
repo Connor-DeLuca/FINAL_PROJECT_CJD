@@ -19,10 +19,6 @@ public abstract class Room {
 	public void removeItem(Item item) {
 		items.remove(item);
 	}
-	
-	public Item getItem(int index) {
-		return items.get(index);
-	}
 
 	public String getName() {
 		return name;

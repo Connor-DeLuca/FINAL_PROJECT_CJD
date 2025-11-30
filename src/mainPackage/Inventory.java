@@ -1,8 +1,8 @@
 package mainPackage;
 import java.util.ArrayList;
 
-public class Inventory<T> {
-	ArrayList<T> items;
+public class Inventory {
+	ArrayList<Item> items;
 	
 	public Inventory() {
 		items = new ArrayList<>();
@@ -12,25 +12,26 @@ public class Inventory<T> {
 		return items.size();
 	}
 	
-	public T getItemByIndex(int index) {
+	public Item getItemByIndex(int index) {
 		return items.get(index);
 	}
 	
-	public T getItemByName(String name) {
+	public Item getItemByName(String name) {
 		for(int i = 0; i < items.size(); i++) {
-			if (items.get(i).equals(name)) {
+			if (items.get(i).getName().equals(name)) {
 				return items.get(i);
 			}
 		}
 		return null; // add error handling later
 	}
 	
-	public void add(T item) {
+	public void add(Item item) {
 		items.add(item);
 	}
 	
-	public void remove(T item) {
+	public void remove(Item item) {
 		items.remove(item);
 	}
+	
 	
 }
