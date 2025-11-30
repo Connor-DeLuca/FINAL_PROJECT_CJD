@@ -9,15 +9,28 @@ public class Inventory<T> {
 	}
 	
 	public int getLength() {
-		
+		return items.size();
 	}
 	
-	public Item getItemByIndex(int index) {
-		
+	public T getItemByIndex(int index) {
+		return items.get(index);
 	}
 	
-	public Item getItemByName(String name) {
-		
+	public T getItemByName(String name) {
+		for(int i = 0; i < items.size(); i++) {
+			if (items.get(i).equals(name)) {
+				return items.get(i);
+			}
+		}
+		return null; // add error handling later
+	}
+	
+	public void add(T item) {
+		items.add(item);
+	}
+	
+	public void remove(T item) {
+		items.remove(item);
 	}
 	
 }

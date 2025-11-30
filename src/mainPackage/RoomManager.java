@@ -14,10 +14,6 @@ public class RoomManager {
     	currentRoom = room;
     }
     
-    public Room getRoomByName(String name) {
-    	// search for a room with that name in rooms and return it
-    }
-    
     public Room getRoomByIndex(int index) {
     	return rooms[index];
     }

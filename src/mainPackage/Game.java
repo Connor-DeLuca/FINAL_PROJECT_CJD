@@ -1,18 +1,20 @@
-import java.util.Scanner;
 package mainPackage;
+import java.util.Scanner;
+import java.io.IOException;
 
 public class Game {
 	private RoomManager roomManager;
+	private Player player;
 	Scanner scnr = new Scanner(System.in);
 	String currentInput;
 	String[] currentInputList;
 	
 	public Game() {
 		// Instantiate room objects
-		LivingQuarters livingQuarters = new LivingQuarters();
-		Armory armory = new Armory();
-		ControlRoom controlRoom = new ControlRoom();
-		EscapePod escapePod = new EscapePod();
+		LivingQuarters livingQuarters = new LivingQuarters("Living Quarters","placeholder desc",null,null,false);
+		Armory armory = new Armory("Armory","placeholder desc",null,null,false);
+		ControlRoom controlRoom = new ControlRoom("Control Room","placeholder desc",null,null,false);
+		EscapePod escapePod = new EscapePod("Escape Pod","placeholder desc",null,null,false);
 		Room[] rooms = {livingQuarters,armory,controlRoom,escapePod};
 		roomManager = new RoomManager(rooms);
 	}
@@ -69,8 +71,8 @@ public class Game {
     }
 
 	public String[] cleanInput(String input) {
-		// change to lowercase, split to a list, ensure it's valid input, etc
-		return input.split(" "); // for now
+		// change to lowercase, split to an array, ensure it's valid input, etc
+		return input.toLowerCase().split(" ");
 	}
 	
 	public void readInput() {

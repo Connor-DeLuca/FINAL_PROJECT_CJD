@@ -24,28 +24,71 @@ public class Player {
 	public void use(String name) {
 		Item item = inventory.getItemByName(name);
 		if (item instanceof ConsumableItem) {
-			item.useConsumable();
-			inventory.remove(name);
+			ConsumableItem healingItem = (ConsumableItem) item;
+			healingItem.useConsumable(this);
+			inventory.remove(healingItem);
 			gameManager.print(item.getName() + " used.");
 			gameManager.newPrompt();
 		}
 		else {
 			gameManager.print(item.getName() + " cannot be used. \"use\" is for consumables.");
-			gameManager.print("If it is a weapon, type attack <EnemyName> and your best weapon will be used.");
+			gameManager.print("If it is a weapongetLength(), type attack <EnemyName> and your best weapon will be used.");
 			gameManager.print("If it is a key, type unlock <RoomName>.");
 			gameManager.newPrompt();
 		}
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public Inventory<Item> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(Inventory<Item> inventory) {
+		this.inventory = inventory;
+	}
+
+	public Game getGameManager() {
+		return gameManager;
+	}
+
+	public void setGameManager(Game gameManager) {
+		this.gameManager = gameManager;
+	}
+
+	public Random getRandom() {
+		return random;
+	}
+
+	public void setRandom(Random random) {
+		this.random = random;
+	}
+
 	public void attack(Entity target) {
 		// loop through and find the best weapon in the player's inventory
 		int topDamage = 0;
-		WeaponItem weapon = null;
+		WeaponItem bestWeapon = null;
 		for(int i = 0; i < inventory.getLength(); i++) {
-			if (inventory.getItemByIndex(i) instanceof WeaponItem) {
-				if (inventory.getItemByIndex(i).getDamage() > topDamage) {
-					weapon = inventory.getItemByIndex(i);
-					topDamage = weapon.getDamage();
+			Item item = inventory.getItemByIndex(i);
+			if (item instanceof WeaponItem) {
+				WeaponItem currentWeapon = (WeaponItem) item;
+				if (currentWeapon.getDamage() > topDamage) {
+					bestWeapon = currentWeapon;
+					topDamage = currentWeapon.getDamage();
 				}
 			}
 		}
@@ -54,11 +97,13 @@ public class Player {
 		 * their health is 0.
 		 */
 		while (target.isAlive() && health > 0) {
-			if (weapon == null) {
+			if (bestWeapon == null) {
 				gameManager.print("You do not have any weapons to fight " + target.getName() + " with.");
 				gameManager.print("You attempt to use your fists and do around 15-25 damage.");
 				target.setHealth(target.getHealth() - (random.nextInt(25 - 15 + 1) + 15));
-				target.attack(20);
+				target.attack(20,this);
+				gameManager.print(target.getName() + " attacked you and did " + target.getDamage() + " damage.");
+				gameManager.print("You have " + health + "% health left.");
 			}
 			else {
 				target.setHealth(target.getHealth() - topDamage);
@@ -67,7 +112,7 @@ public class Player {
 			}
 		}
 		if (health <= 0) {
-			gameManager.print("You were killed by " + entity.getName() + ".");
+			gameManager.print("You were killed by " + target.getName() + ".");
 			gameManager.endGame(false);
 		}
 		if (target.isAlive() == false) {

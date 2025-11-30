@@ -1,9 +1,51 @@
 package mainPackage;
 
 public class Entity {
-	// make sure it has a name and getName().
-	// Also ensure you print something about the attack when the entity attacks.
-	// Make sure there is a health int and a way to get and set it
-	// add logic for it dying too when health is under 0. (and print that it died)
-	// alive boolean too
+	private String name;
+	private String description;
+	private int health;
+	private boolean alive;
+	
+	public Entity(String name, String description, int health) {
+		this.name = name;
+		this.description = description;
+		this.health = health;
+		alive = true;
+	}
+	
+	public void attack(int damage, Player target) {
+		target.setHealth(target.getHealth() - damage);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
+
+	public boolean isAlive() {
+		return alive;
+	}
+
+	public void setAlive(boolean alive) {
+		this.alive = alive;
+	}
 }
