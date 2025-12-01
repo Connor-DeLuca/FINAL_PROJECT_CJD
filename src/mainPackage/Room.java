@@ -1,6 +1,11 @@
 package mainPackage;
 import java.util.ArrayList;
 
+/**
+ * The abstract class which rooms are built of.
+ * 
+ * @author cdeluca
+ */
 public abstract class Room {
 	private String name;
 	private String description;
@@ -8,6 +13,14 @@ public abstract class Room {
 	ArrayList<Item> items;
 	private boolean isLocked;
 	
+	/**
+	 * 
+	 * @param name The room's unique name.
+	 * @param description The room's description to be read by the user.
+	 * @param entity The entity the player fights upon entering the room.
+	 * @param items The items the player can find in the room.
+	 * @param isLocked Whether the room can be entered at game start.
+	 */
 	public Room(String name, String description, Entity entity, ArrayList<Item> items, boolean isLocked) {
 		this.name = name;
 		this.description = description;
@@ -16,6 +29,11 @@ public abstract class Room {
 		this.isLocked = isLocked; 
 	}
 	
+	/**
+	 * Removes an item from items.
+	 * 
+	 * @param item The item to remove.
+	 */
 	public void removeItem(Item item) {
 		items.remove(item);
 	}

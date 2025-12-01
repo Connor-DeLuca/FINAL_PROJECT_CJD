@@ -3,6 +3,12 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.IOException;
 
+/**
+ * The main Game class that must be instantiated to run the game.
+ * This brings together all the classes and includes important methods for running the game.
+ * 
+ * @author cdeluca
+ */
 public class Game {
 	private RoomManager roomManager;
 	private Player player;
@@ -10,8 +16,11 @@ public class Game {
 	String currentInput;
 	String[] currentInputList;
 	
+	/**
+	 * Sets up all the important variables, change these to modify the room structure.
+	 */
 	public Game() {
-		// Instantiate room objects
+		// Create game objects and instantiate rooms
 		
 		ArrayList<Item> livingQuartersItems = new ArrayList<>();
 		KeyItem armoryKey = new KeyItem("Armory Key","A key that appears to unlock the armory.");
@@ -45,10 +54,11 @@ public class Game {
 		roomManager = new RoomManager(rooms);
 	}
 
+	/**
+	 * Starts the game and runs the main game loop.
+	 */
 	public void start() {
-		String name = "Connor"; //CHANGE THIS LATER TO BE FROM INPUT
-		// Explain how to play and what to do and the backstory
-		player = new Player(this,name);
+		player = new Player(this);
 		
 		System.out.println("Systems Initializing...");
 		System.out.println("You are an astronaut stranded deep in space.");
@@ -56,14 +66,6 @@ public class Game {
 		System.out.println("You must make it to the escape pod before the rogue robots on your ship end you.");
 		System.out.println("You will be able to interact with the story using many choices throughout.");
 		
-		/* Print out list of options and ask what to do.
-		RoomManager needs to have a list of available
-		unlocked Rooms, all the Room classes need to have list
-		of available actions, enemies, etc. Also print the description
-		of what's in the current room. Make options of what room to enter
-		be numbers. Like Armory is 1, LivingQuarters is 2, etc. Don't start at 0
-		because that would just be your current room.
-		*/
 		while (true) {
 			Room current = roomManager.getCurrentRoom();
 			if (current.getEntity() != null) {
@@ -73,10 +75,17 @@ public class Game {
 			if (current instanceof EscapePod) {
 				endGame(true);
 			}
+			
 			newPrompt();
 		}
 	}
 	
+	/**
+	 * This takes the boolean of whether the player won or lost and outputs the
+	 * appropriate ending.
+	 * 
+	 * @param victory Whether the player won or lost.
+	 */
 	public void endGame(boolean victory) {
 		if (victory) {
 			System.out.println("You made it to the escape pods alive!");
@@ -85,18 +94,24 @@ public class Game {
 			System.exit(0);
 		}
 		else {
-			/* the player died (not sure how because the game is super easy, they must be really bad),
-			 * so end the game
-			 */
 			System.out.println("You have died, and thus your story ends here. Nice try!");
 			System.exit(0);
 		}
 	}
 	
+	/**
+	 * A public method to output to the console from any class that can access this.
+	 * 
+	 * @param output The string to output.
+	 */
 	public void print(String output) {
-		System.out.println(output); // change this if you decide to do a different output method
+		System.out.println(output);
 	}
 
+	/**
+	 * Handles core input system. It gives the player options of what to do and takes
+	 * that action.
+	 */
 	public void newPrompt() {
 		Room current = roomManager.getCurrentRoom();
 		
@@ -146,6 +161,9 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Prints each item in the player's inventory.
+	 */
 	public void showInventory() {
 		Inventory inv = player.getInventory();
 		System.out.println("\nInventory:");
@@ -155,6 +173,9 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Looks for an item in the room's list of items and gives the player the next one.
+	 */
 	public void searchRoom() {
 		Room current = roomManager.getCurrentRoom();
 		ArrayList<Item> items = current.getItems();
@@ -168,23 +189,14 @@ public class Game {
 		}
 	}
 	
-	
-	/*
-	I may or may not end up using this method
-	If not, I guess it'll just use up memory for
-	no reason
-	*/
-	public static void clearConsole()
-    {
-        try
-        {
-            if (System.getProperty("os.name").contains("Windows"))
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            else
-                Runtime.getRuntime().exec("clear");
-        } catch (IOException | InterruptedException ex) {}
-    }
-
+	/**
+	 * Asks the player a message and gives them input options.
+	 * 
+	 * @param message The message to output, usually options of what to do.
+	 * @param min The lowest value (so you can choose 0 or 1)
+	 * @param max The highest option.
+	 * @return The choice the player made (catches NAN exceptions).
+	 */
 	public int promptMenuChoice(String message, int min, int max) {
 		while (true) {
 			System.out.println(message);
@@ -196,6 +208,10 @@ public class Game {
 				}
 			}
 			catch (NumberFormatException e) {
+				/*
+				 * I learned how a NumberFormatException works from this page:
+				 * https://www.w3schools.com/java/java_ref_errors.asp
+				 */
 				System.out.println("Not a valid choice. Please try again.");
 			}
 		}

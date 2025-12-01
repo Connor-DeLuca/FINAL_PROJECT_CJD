@@ -1,26 +1,43 @@
 package mainPackage;
 import java.util.Random;
 
+/**
+ * The player class that stores all data related to the player themself.
+ * 
+ * @author cdeluca
+ */
 public class Player {
-	private String name;
 	private int health;
 	private Inventory inventory;
 	private Game gameManager;
 	private Random random = new Random();
 	
-	public Player(Game gameManager, String name) {
+	/**
+	 * 
+	 * @param gameManager The Game object so Game.print() and other methods can be called.
+	 */
+	public Player(Game gameManager) {
 		this.gameManager = gameManager;
-		this.name = name;
 		health = 100;
 		inventory = new Inventory();
 	}
 	
+	/**
+	 * Adds an item to the player's inventory and prints relevant info.
+	 * 
+	 * @param item Item to pick up.
+	 */
 	public void pickUp(Item item) {
 		inventory.add(item);
 		gameManager.print("You found " + item.getName() + "!");
 		gameManager.print(item.getDescription());
 	}
 	
+	/**
+	 * Uses a consumable item.
+	 * 
+	 * @param name The unique name of the object to use.
+	 */
 	public void use(String name) {
 		Item item = inventory.getItemByName(name);
 		if (item instanceof ConsumableItem) {
@@ -38,14 +55,6 @@ public class Player {
 		}
 	}
 	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public int getHealth() {
 		return health;
 	}
@@ -77,7 +86,12 @@ public class Player {
 	public void setRandom(Random random) {
 		this.random = random;
 	}
-
+	
+	/**
+	 * Attacks an enemy and prints the data related to the battle.
+	 * 
+	 * @param target Enemy to attack.
+	 */
 	public void attack(Entity target) {
 		// loop through and find the best weapon in the player's inventory
 		int topDamage = 0;
@@ -92,6 +106,8 @@ public class Player {
 				}
 			}
 		}
+		gameManager.print("You see a " + target.getName() + " and it definitely sees you.");
+		gameManager.print("Description: " + target.getDescription());
 		/* Loop through and attack target with the player's best weapon. 
 		 * Also handles logic for making target fight back and the player die if
 		 * their health is 0.
@@ -101,11 +117,12 @@ public class Player {
 				gameManager.print("You do not have any weapons to fight " + target.getName() + " with.");
 				gameManager.print("You attempt to use your fists and do around 15-25 damage.");
 				target.setHealth(target.getHealth() - (random.nextInt(25 - 15 + 1) + 15));
+				// The formula for random integers in a specific range in the line above was inspired by:
+				// https://www.geeksforgeeks.org/java/generating-random-numbers-in-java/
 				if (target.getHealth() <= 0) {
 					target.setAlive(false);
 					break;
 				}
-				// CITE THIS
 				target.attack(this);
 				gameManager.print(target.getName() + " attacked you and did " + target.getDamage() + " damage.");
 				gameManager.print("You have " + health + "% health left.");

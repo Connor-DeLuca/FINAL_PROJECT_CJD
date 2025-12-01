@@ -1,15 +1,28 @@
 package mainPackage;
 
+/**
+ * The manager that handles rooms and how they connect.
+ * 
+ * @author cdeluca
+ */
 public class RoomManager {
-
     private Room[] rooms;
     private Room currentRoom;
     
+    /**
+     * 
+     * @param rooms The list of rooms to walk through in order.
+     */
     public RoomManager(Room[] rooms) {
     	this.rooms = rooms;
     	currentRoom = rooms[0];
     }
     
+    /**
+     * Moves the player to a specific room.
+     * 
+     * @param room
+     */
     public void movePlayer(Room room) {
     	currentRoom = room;
     }
@@ -34,6 +47,11 @@ public class RoomManager {
 		this.currentRoom = currentRoom;
 	}
     
+	/**
+	 * Finds the next room in rooms.
+	 * 
+	 * @return The room after the current room.
+	 */
     public Room getNextRoom() {
     	for (int i = 0; i < rooms.length; i++) {
     		if (rooms[i] == currentRoom) {
