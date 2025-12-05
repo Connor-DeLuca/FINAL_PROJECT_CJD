@@ -12,12 +12,15 @@ import java.io.IOException;
 public class Game {
 	private RoomManager roomManager;
 	private Player player;
-	Scanner scnr = new Scanner(System.in);
+	Scanner scnr;
 	
 	/**
 	 * Sets up all the important variables, change these to modify the room structure.
 	 */
 	public Game() {
+		scnr = new Scanner(System.in);
+		player = new Player(this);
+		
 		// Create game objects and instantiate rooms
 		
 		ArrayList<Item> livingQuartersItems = new ArrayList<>();
@@ -56,8 +59,6 @@ public class Game {
 	 * Starts the game and runs the main game loop.
 	 */
 	public void start() {
-		player = new Player(this);
-		
 		System.out.println("Systems Initializing...");
 		System.out.println("You are an astronaut stranded deep in space.");
 		System.out.println("Someone has remotely hacked your ship and the power is out.");
@@ -70,11 +71,19 @@ public class Game {
 				player.attack(current.getEntity());
 				roomManager.getCurrentRoom().setEntity(null);
 			}
-			if (current instanceof EscapePod) {
-				endGame(true);
+			
+			if (player.getHealth() > 0) {
+				if (current instanceof EscapePod) {
+					endGame(true);
+					break;
+				}
+				
+				newPrompt();
+			}
+			else {
+				break;
 			}
 			
-			newPrompt();
 		}
 	}
 	
@@ -89,11 +98,26 @@ public class Game {
 			System.out.println("You made it to the escape pods alive!");
 			System.out.println("You enter the escape pod and shoot off towards the nearest planet.");
 			System.out.println("Congratulations, you win!");
-			System.exit(0);
 		}
 		else {
 			System.out.println("You have died, and thus your story ends here. Nice try!");
-			System.exit(0);
+		}
+	}
+
+	/**
+	 * This takes the boolean of whether the player won or lost and outputs the
+	 * appropriate ending.
+	 * 
+	 * @param victory Whether the player won or lost.
+	 */
+	public void endGame(boolean victory) {
+		if (victory) {
+			System.out.println("You made it to the escape pods alive!");
+			System.out.println("You enter the escape pod and shoot off towards the nearest planet.");
+			System.out.println("Congratulations, you win!");
+		}
+		else {
+			System.out.println("You have died, and thus your story ends here. Nice try!");
 		}
 	}
 	
@@ -205,14 +229,10 @@ public class Game {
 					return choice;
 				}
 				else {
-					throw new IndexOutOfBoundsException();
+					throw new Exception();
 				}
 			}
 			catch (Exception e) {
-				/*
-				 * I learned how a NumberFormatException works from this page:
-				 * https://www.w3schools.com/java/java_ref_errors.asp
-				 */
 				System.out.println("Not a valid choice. Please try again.");
 			}
 		}

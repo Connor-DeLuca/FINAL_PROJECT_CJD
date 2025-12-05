@@ -125,7 +125,9 @@ public class Player {
 				}
 				target.attack(this);
 				gameManager.print(target.getName() + " attacked you and did " + target.getDamage() + " damage.");
-				gameManager.print("You have " + health + "% health left.");
+				if (health > 0) {
+					gameManager.print("You have " + health + "% health left.");
+				}
 			}
 			else {
 				target.setHealth(target.getHealth() - topDamage);
@@ -136,7 +138,9 @@ public class Player {
 				}
 				target.attack(this);
 				gameManager.print(target.getName() + " attacked you and did " + target.getDamage() + " damage.");
-				gameManager.print("You have " + health + "% health left.");
+				if (health > 0) {
+					gameManager.print("You have " + health + "% health left.");
+				}
 			}
 		}
 		if (health <= 0) {
