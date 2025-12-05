@@ -87,23 +87,6 @@ public class Game {
 			
 		}
 	}
-	
-	/**
-	 * This takes the boolean of whether the player won or lost and outputs the
-	 * appropriate ending.
-	 * 
-	 * @param victory Whether the player won or lost.
-	 */
-	public void endGame(boolean victory) {
-		if (victory) {
-			System.out.println("You made it to the escape pods alive!");
-			System.out.println("You enter the escape pod and shoot off towards the nearest planet.");
-			System.out.println("Congratulations, you win!");
-		}
-		else {
-			System.out.println("You have died, and thus your story ends here. Nice try!");
-		}
-	}
 
 	/**
 	 * This takes the boolean of whether the player won or lost and outputs the
