@@ -79,7 +79,6 @@ public class Game {
 				}
 				
 				newPrompt();
-				clear();
 			}
 			else {
 				break;
@@ -135,6 +134,7 @@ public class Game {
 			if (player.getInventory().getItemByName(nextKey) != null) {
 				System.out.println("You have entered the next room.");
 				roomManager.movePlayer(roomManager.getNextRoom());
+				clear();
 			}
 			else {
 				System.out.println("You wiggle the doorknob but it is locked. There must be a manual key stored somewhere...");
